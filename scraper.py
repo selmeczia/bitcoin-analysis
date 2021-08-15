@@ -1,12 +1,8 @@
-from bs4 import BeautifulSoup
-import requests
 from selenium import webdriver
 import pandas as pd
 import numpy as np
-import plotly.graph_objects as go
-import plotly.express as px
-import matplotlib.pyplot as plt
-import seaborn as sns
+import os
+
 from datetime import datetime as dt
 import time
 
@@ -20,7 +16,9 @@ browser.get(link)
 
 time.sleep(2)
 
-time = dt.now().strftime("%H:%M:%S")
+time = dt.now().strftime("%Y.%m.%d.%H-%M")
+
+# Scraping
 for round in range(1, 10):
     table = browser.find_elements_by_class_name("full-book__tables")
     rows = (len(table[0].text.splitlines()) / 6)
@@ -28,11 +26,15 @@ for round in range(1, 10):
     df = df.append(pd.DataFrame(cut, columns=cols).drop([0]), ignore_index=True).drop_duplicates()
     browser.execute_script("window.scrollBy(0, 1600);")
 
+# Dataframe adjustments
 for col in df.columns:
-    df[col] = df[col].astype(float)
-fig, ax = plt.subplots()
-ax.set_title('BTC/USD order book on Bitfinex exchange at ' + time)
-sns.ecdfplot(x="price_buy", weights="amount_buy", stat="count", complementary=True, data=df, ax=ax, color='g')
+    df[col] = df[col].str.replace(",","").astype(float)
+
+# Save dataframe
+path = os.getcwd()
+name = path + "/order_book_data/" +time + ".csv"
+df.to_csv(name, index=False)
+
 
 
 
