@@ -24,6 +24,7 @@ for i in range(1, 10):
     cut = np.array_split(table[0].text.splitlines(), rows)
     df = df.append(pd.DataFrame(cut, columns=cols).drop([0]), ignore_index=True).drop_duplicates()
     browser.execute_script("window.scrollBy(0, 1600);")
+browser.close()
 
 # Dataframe adjustments
 for col in df.columns:
