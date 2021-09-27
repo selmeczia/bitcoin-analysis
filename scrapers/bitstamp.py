@@ -30,7 +30,7 @@ def main():
     asks_df["price"] = asks_df["price"].astype(float)
     asks_df["amount"] = asks_df["amount"].astype(float)
     asks_df["total"] = asks_df["amount"].cumsum()
-    if asks_df["price"].max() < asks_df["price"][0] * (1 - top_percent):
+    if asks_df["price"].max() < asks_df["price"][0] * (1 + top_percent):
         print(exchange_name + " has fewer values than necessary!")
     asks_df = asks_df.loc[asks_df["price"] < asks_df["price"][0] * (1 + top_percent)]
     asks_df["type"] = "sell"
