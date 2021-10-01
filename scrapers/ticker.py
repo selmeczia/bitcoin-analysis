@@ -7,10 +7,10 @@ import binance
 scrapers = ["bitfinex", "bitstamp", "coinbase", "kraken"]
 
 
-# bitfinex.main()
-# bitstamp.main()
-# kraken.main()
+bitfinex.main()
+bitstamp.main()
+kraken.main()
 binance.main()
-# coinbase.main()
+coinbase.main()
 
 print("All data gathered!")

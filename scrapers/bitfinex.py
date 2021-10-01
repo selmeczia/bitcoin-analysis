@@ -39,8 +39,8 @@ def main():
     long_df = pd.concat([bids_df, asks_df])
 
     # Save dataframe
-    parent = os.path.dirname(os.getcwd())
-    os.chdir(parent)
+    # parent = os.path.dirname(os.getcwd())
+    # os.chdir(parent)
     path = os.getcwd()
     name_long_df = path + "/order_books/bitfinex/" + exchange_name + "_" + timestamp + ".csv"
     long_df.to_csv(name_long_df, index=False)
