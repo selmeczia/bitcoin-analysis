@@ -22,3 +22,27 @@ WARNING - 2021-10-01 13:19:33,208 : binance has fewer values than necessary on t
 INFO - 2021-10-01 13:19:33,251 : binance scraping done!
 INFO - 2021-10-01 13:19:38,375 : coinbase scraping done!
 INFO - 2021-10-01 13:19:38,376 : All data gathered!
+INFO - 2021-10-01 14:12:06,520 : bitfinex scraping done!
+INFO - 2021-10-01 14:12:06,641 : bitstamp scraping done!
+INFO - 2021-10-01 14:12:08,113 : kraken scraping done!
+WARNING - 2021-10-01 14:12:08,651 : binance has fewer values than necessary on the BID side! 96.0186%
+WARNING - 2021-10-01 14:12:08,658 : binance has fewer values than necessary on the ASK side! 104.1464%
+INFO - 2021-10-01 14:12:08,699 : binance scraping done!
+INFO - 2021-10-01 14:12:13,825 : coinbase scraping done!
+INFO - 2021-10-01 14:12:13,827 : All data gathered!
+INFO - 2021-10-01 14:57:02,384 : bitfinex scraping done!
+INFO - 2021-10-01 14:57:02,505 : bitstamp scraping done!
+INFO - 2021-10-01 14:57:03,801 : kraken scraping done!
+WARNING - 2021-10-01 14:57:04,064 : binance has fewer values than necessary on the BID side! 95.9499%
+WARNING - 2021-10-01 14:57:04,070 : binance has fewer values than necessary on the ASK side! 104.2211%
+INFO - 2021-10-01 14:57:04,113 : binance scraping done!
+INFO - 2021-10-01 14:57:09,252 : coinbase scraping done!
+INFO - 2021-10-01 14:57:09,254 : All data gathered!
+INFO - 2021-10-01 15:06:47,931 : bitfinex scraping done!
+INFO - 2021-10-01 15:06:48,038 : bitstamp scraping done!
+INFO - 2021-10-01 15:06:49,691 : kraken scraping done!
+WARNING - 2021-10-01 15:06:49,953 : binance has fewer values than necessary on the BID side! 95.9505%
+WARNING - 2021-10-01 15:06:49,959 : binance has fewer values than necessary on the ASK side! 104.2204%
+INFO - 2021-10-01 15:06:50,000 : binance scraping done!
+INFO - 2021-10-01 15:06:55,129 : coinbase scraping done!
+INFO - 2021-10-01 15:06:55,131 : All data gathered!
