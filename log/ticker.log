@@ -1,0 +1,8 @@
+INFO - 2021-10-01 12:58:46,712 : bitfinex scraping done!
+INFO - 2021-10-01 12:58:46,834 : bitstamp scraping done!
+INFO - 2021-10-01 12:58:48,109 : kraken scraping done!
+WARNING - 2021-10-01 12:58:48,370 : binance has fewer values than necessary on the BID side! 96.1662%
+WARNING - 2021-10-01 12:58:48,376 : binance has fewer values than necessary on the ASK side! 103.9866%
+INFO - 2021-10-01 12:58:48,418 : binance scraping done!
+INFO - 2021-10-01 12:58:53,547 : coinbase scraping done!
+INFO - 2021-10-01 12:58:53,549 : All data gathered!
