@@ -20,14 +20,11 @@ plt.rcParams["figure.figsize"] = (15,10)
 
 for market in markets:
     plt.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
-             market_depth.loc[market_depth["market"] == market]["bid_amount"],
+             market_depth.loc[market_depth["market"] == market]["bid_amount"] +
+             market_depth.loc[market_depth["market"] == market]["ask_amount"],
              label = market.capitalize())
 
-# plt.style.use('stylename')
 plt.title('Market depth across exchanges (sum of bid and ask volume 5%)')
-
 plt.ylabel("Depth")
 plt.legend()
-
-# plt.show()
 plt.savefig('market_depth.png', dpi=300)

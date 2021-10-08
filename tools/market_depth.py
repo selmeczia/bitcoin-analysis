@@ -5,8 +5,8 @@ import pandas as pd
 markets = ["binance", "bitfinex", "bitstamp", "coinbase", "kraken"]
 main_path = "C:/Users/Adam/Documents/bitcoin-orderbook/order_books"
 
+# Create dictionary with files
 markets_dict = {}
-
 for market in markets:
     path = main_path + "/" + market
     filenames = listdir(path)
@@ -19,6 +19,7 @@ for market in markets:
         markets_dict.setdefault(market, [])
         markets_dict[market].append(data)
 
+# Calculating market depth for each exchange at each timestamp
 market_depth = {}
 for market in markets:
     row_list = []
