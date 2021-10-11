@@ -51,4 +51,3 @@ for market in markets:
 for market in market_spread:
     save_path = main_path + "/market_spread/"
     market_spread[market].to_csv(save_path + market + ".csv", index=False)
-
