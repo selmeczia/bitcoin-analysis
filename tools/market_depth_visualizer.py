@@ -27,18 +27,25 @@ for market in listdir(main_path):
 
 
 # Market depth across exchanges
+plt.rcParams["figure.figsize"] = (15, 10)
+fig,ax = plt.subplots()
+for market in markets:
+    ax.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
+            market_depth.loc[market_depth["market"] == market]["bid_amount"] +
+            market_depth.loc[market_depth["market"] == market]["ask_amount"],
+            label=market.capitalize())
+ax.legend()
+ax2 = ax.twinx()
 
-# plt.rcParams["figure.figsize"] = (15, 10)
-# for market in markets:
-#     plt.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
-#              market_depth.loc[market_depth["market"] == market]["bid_amount"] +
-#              market_depth.loc[market_depth["market"] == market]["ask_amount"],
-#              label=market.capitalize())
-#
-# plt.title('Market depth across exchanges (sum of bid and ask volume 5%)')
-# plt.ylabel("Depth")
-# plt.legend()
-# plt.show()
+ax2.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == "binance"]["timestamp"], format="%Y.%m.%d.%H-%M"),
+         market_spread.loc[market_spread["market"] == "binance"][["highest_bid", "lowest_ask"]].mean(axis=1),
+         color="black", linestyle="dashed"
+)
+
+plt.title('Market depth across exchanges (sum of bid and ask volume 5%)')
+plt.ylabel("Depth")
+
+plt.show()
 # plt.savefig(plot_path / 'market_depth.png', dpi=300)
 
 
@@ -71,17 +78,17 @@ for market in listdir(main_path):
 
 # Market spreads across exchanges
 
-plt.rcParams["figure.figsize"] = (18, 10)
-for market in markets:
-    plt.plot(pd.to_datetime(market_spread.loc[market_spread["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
-             market_spread.loc[market_spread["market"] == market]["lowest_ask"] -
-             market_spread.loc[market_spread["market"] == market]["highest_bid"],
-             label=market.capitalize())
-plt.title('Market spread across exchanges')
-plt.ylabel("Spread")
-plt.legend()
+# plt.rcParams["figure.figsize"] = (18, 10)
+# for market in markets:
+#     plt.plot(pd.to_datetime(market_spread.loc[market_spread["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
+#              market_spread.loc[market_spread["market"] == market]["lowest_ask"] -
+#              market_spread.loc[market_spread["market"] == market]["highest_bid"],
+#              label=market.capitalize())
+# plt.title('Market spread across exchanges')
+# plt.ylabel("Spread")
+# plt.legend()
 # plt.show()
-plt.savefig(plot_path / 'market_spread.png', dpi=300)
+# plt.savefig(plot_path / 'market_spread.png', dpi=300)
 
 
 # Price differences
