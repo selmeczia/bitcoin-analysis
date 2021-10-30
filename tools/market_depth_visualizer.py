@@ -6,11 +6,11 @@ from pathlib import Path
 
 # Plot config
 path = Path(os.getcwd())
-plot_path = path.parent.absolute() / "plots"
+plot_path = path.parent.absolute() / "plots_2"
 
 # Market depth
 markets = ["binance", "bitfinex", "bitstamp", "coinbase", "kraken"]
-main_path = "C:/Users/Adam/Documents/bitcoin-orderbook/order_books/market_depth"
+main_path = "C:/Users/Adam/Documents/bitcoin-orderbook_2/order_books/market_depth"
 market_depth = pd.DataFrame()
 for market in listdir(main_path):
     path = main_path + "/" + market
@@ -18,7 +18,7 @@ for market in listdir(main_path):
     market_depth = market_depth.append(data, ignore_index=True)
 
 # Bid-ask spread
-main_path = "C:/Users/Adam/Documents/bitcoin-orderbook/order_books/market_spread"
+main_path = "C:/Users/Adam/Documents/bitcoin-orderbook_2/order_books/market_spread"
 market_spread = pd.DataFrame()
 for market in listdir(main_path):
     path = main_path + "/" + market
@@ -27,25 +27,25 @@ for market in listdir(main_path):
 
 
 # Market depth across exchanges
-plt.rcParams["figure.figsize"] = (15, 10)
-fig,ax = plt.subplots()
-for market in markets:
-    ax.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
-            market_depth.loc[market_depth["market"] == market]["bid_amount"] +
-            market_depth.loc[market_depth["market"] == market]["ask_amount"],
-            label=market.capitalize())
-ax.legend()
-ax2 = ax.twinx()
-
-ax2.plot(pd.to_datetime(market_depth.loc[market_depth["market"] == "binance"]["timestamp"], format="%Y.%m.%d.%H-%M"),
-         market_spread.loc[market_spread["market"] == "binance"][["highest_bid", "lowest_ask"]].mean(axis=1),
-         color="black", linestyle="dashed"
-)
-
-plt.title('Market depth across exchanges (sum of bid and ask volume 5%)')
-plt.ylabel("Depth")
-
-plt.show()
+# plt.rcParams["figure.figsize"] = (15, 10)
+# fig,axs = plt.subplots(2)
+# for market in markets:
+#     axs[0].plot(pd.to_datetime(market_depth.loc[market_depth["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
+#             market_depth.loc[market_depth["market"] == market]["bid_amount"] +
+#             market_depth.loc[market_depth["market"] == market]["ask_amount"],
+#             label=market.capitalize())
+# axs[0].legend()
+# axs[0].set(ylabel="Depth")
+# axs[0].set_title('Market depth across exchanges (sum of bid and ask volume 5%)')
+#
+# axs[1].plot(pd.to_datetime(market_depth.loc[market_depth["market"] == "binance"]["timestamp"], format="%Y.%m.%d.%H-%M"),
+#          market_spread.loc[market_spread["market"] == "binance"][["highest_bid", "lowest_ask"]].mean(axis=1),
+#          color="black", linestyle="dashed")
+# axs[1].set(ylabel="Price")
+# axs[1].set_title('BTC-USD price')
+# for ax in fig.get_axes():
+#     ax.label_outer()
+# plt.show()
 # plt.savefig(plot_path / 'market_depth.png', dpi=300)
 
 
@@ -78,14 +78,14 @@ plt.show()
 
 # Market spreads across exchanges
 
-# plt.rcParams["figure.figsize"] = (18, 10)
+# plt.rcParams["figure.figsize"] = (18, 5)
 # for market in markets:
 #     plt.plot(pd.to_datetime(market_spread.loc[market_spread["market"] == market]["timestamp"], format="%Y.%m.%d.%H-%M"),
 #              market_spread.loc[market_spread["market"] == market]["lowest_ask"] -
 #              market_spread.loc[market_spread["market"] == market]["highest_bid"],
 #              label=market.capitalize())
 # plt.title('Market spread across exchanges')
-# plt.ylabel("Spread")
+# plt.ylabel("Spread ($)")
 # plt.legend()
 # plt.show()
 # plt.savefig(plot_path / 'market_spread.png', dpi=300)
@@ -108,7 +108,7 @@ plt.show()
 # plt.gca().set_yticks(current_values)
 # plt.gca().set_yticklabels(['{:.2%}'.format(x-1) for x in current_values])
 # plot_name = base_currency + "_price_diff.png"
-# # plt.show()
+# plt.show()
 # plt.savefig(plot_path / plot_name, dpi=300)
 
 
@@ -145,5 +145,4 @@ plt.show()
 # plt.show()
 # plt.savefig(plot_path / 'hour_volumes.png', dpi=300)
 
-#TODO: market depth - price plot
 #TODO: x amount of bitcoin sold - price change
