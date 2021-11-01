@@ -10,9 +10,7 @@ endtime = "1635498000000"
 column_order = ["opentime", "closetime", "open", "high", "low", "close", "volume"]
 
 
-def main():
-
-    # Binance
+def get_binance_market_data():
     exchange_name = "binance"
     response = requests.get(f"https://api.binance.com/api/v3/klines?symbol=BTCBUSD&interval=1h&startTime={starttime}"
                             f"&endTime={endtime}").json()
@@ -27,7 +25,7 @@ def main():
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
-    # Bitfinex
+def get_bitfinex_market_data():
     exchange_name = "bitfinex"
     base_url = "https://api-pub.bitfinex.com/v2/candles/trade:1h:tBTCUSD/hist?limit=10000"
     response = requests.get(f'{base_url}&start={starttime}'
@@ -40,7 +38,8 @@ def main():
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
-    # Bitstamp
+
+def get_bitstamp_market_data():
     exchange_name = "bitstamp"
     base_url = "https://www.bitstamp.net/api/v2/ohlc/btcusd/"
     response = requests.get(f'{base_url}?start={starttime[:-3]}&end={endtime[:-3]}&step=3600&limit=336').json()
@@ -54,7 +53,8 @@ def main():
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
-    # Coinbase
+
+def get_coinbase_market_data():
     exchange_name = "coinbase"
     startdate_url = urllib.parse.quote_plus("2021-10-15T10:00:00+00:00")
     middate_url = urllib.parse.quote_plus("2021-10-22T10:00:00+00:00")
@@ -69,11 +69,13 @@ def main():
     market_data = pd.concat([market_data_2, market_data_1], ignore_index=True)
     market_data["opentime"] = pd.to_datetime(market_data["opentime"], unit="s")
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
+    market_data = market_data.sort_values(by="opentime").drop_duplicates()
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
-    # Kraken
+
+def get_kraken_market_data():
     exchange_name = "kraken"
     cols = ["opentime", "open", "high", "low", "close", "vwap", "volume", "count"]
     num_cols = ["open", "high", "low", "close", "vwap", "volume", "count"]
@@ -90,4 +92,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    get_binance_market_data()
+    get_bitfinex_market_data()
+    get_bitstamp_market_data()
+    get_coinbase_market_data()
+    get_kraken_market_data()
