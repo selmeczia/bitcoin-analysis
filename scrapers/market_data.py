@@ -35,6 +35,12 @@ def get_bitfinex_market_data():
     market_data["opentime"] = pd.to_datetime(market_data["opentime"], unit="ms")
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
 
+    # trading statistics
+    response_trades = requests.get("https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist?limit=10000&start=1634289900000&end=1635498000000").json()
+    trades_df = pd.DataFrame(response_trades, columns=["ID", "timestamp", "amount", "price"])
+    trades_df["timestamp"] = pd.to_datetime(trades_df["timestamp"], unit="ms")
+    trades_df
+
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
@@ -52,6 +58,11 @@ def get_bitstamp_market_data():
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
+
+    response_trades  = requests.get("https://www.bitstamp.net/api/v2/transactions/btcusd/?time=day").json()
+    trades_df = pd.DataFrame(response_trades)
+    trades_df["date"] = pd.to_datetime(trades_df["date"].astype(int), unit="s")
+    trades_df
 
 
 def get_coinbase_market_data():
@@ -92,8 +103,8 @@ def get_kraken_market_data():
 
 
 if __name__ == "__main__":
-    get_binance_market_data()
-    get_bitfinex_market_data()
+    # get_binance_market_data()
+    # get_bitfinex_market_data()
     get_bitstamp_market_data()
-    get_coinbase_market_data()
-    get_kraken_market_data()
+    # get_coinbase_market_data()
+    # get_kraken_market_data()
