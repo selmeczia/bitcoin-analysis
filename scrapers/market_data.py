@@ -4,10 +4,12 @@ import datetime
 import urllib.parse
 
 # Config
-path = "C:/Users/Adam/Documents/bitcoin-orderbook_2/order_books/market_data/"
+path = "C:/Users/Adam/Documents/bitcoin-orderbook_2/order_books/market_data"
+trades_data = pd.read_csv("C:/Users/Adam/Documents/bitcoin-transactions/trades.csv")
+trades_data["timestamp"] = pd.to_datetime(trades_data["timestamp"])
 starttime = "1634289900000"
 endtime = "1635498000000"
-column_order = ["opentime", "closetime", "open", "high", "low", "close", "volume"]
+column_order = ["opentime", "closetime", "open", "high", "low", "close", "volume", "trades"]
 
 
 def get_binance_market_data():
@@ -34,12 +36,9 @@ def get_bitfinex_market_data():
     market_data = pd.DataFrame(response, columns=cols)
     market_data["opentime"] = pd.to_datetime(market_data["opentime"], unit="ms")
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
-
-    # trading statistics
-    response_trades = requests.get("https://api-pub.bitfinex.com/v2/trades/tBTCUSD/hist?limit=10000&start=1634289900000&end=1635498000000").json()
-    trades_df = pd.DataFrame(response_trades, columns=["ID", "timestamp", "amount", "price"])
-    trades_df["timestamp"] = pd.to_datetime(trades_df["timestamp"], unit="ms")
-    trades_df
+    market_data = market_data.merge(trades_data[["timestamp", exchange_name]],
+                                    left_on="opentime",
+                                    right_on="timestamp").rename({exchange_name: "trades"}, axis=1)
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
@@ -55,15 +54,12 @@ def get_bitstamp_market_data():
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
     market_data = market_data.drop("timestamp", 1)
     market_data[num_cols] = market_data[num_cols].astype(float)
+    market_data = market_data.merge(trades_data[["timestamp", exchange_name]],
+                                    left_on="opentime",
+                                    right_on="timestamp").rename({exchange_name: "trades"}, axis=1)
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
-
-    response_trades  = requests.get("https://www.bitstamp.net/api/v2/transactions/btcusd/?time=day").json()
-    trades_df = pd.DataFrame(response_trades)
-    trades_df["date"] = pd.to_datetime(trades_df["date"].astype(int), unit="s")
-    trades_df
-
 
 def get_coinbase_market_data():
     exchange_name = "coinbase"
@@ -81,6 +77,9 @@ def get_coinbase_market_data():
     market_data["opentime"] = pd.to_datetime(market_data["opentime"], unit="s")
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
     market_data = market_data.sort_values(by="opentime").drop_duplicates()
+    market_data = market_data.merge(trades_data[["timestamp", exchange_name]],
+                                    left_on="opentime",
+                                    right_on="timestamp").rename({exchange_name: "trades"}, axis=1)
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
@@ -97,6 +96,9 @@ def get_kraken_market_data():
     market_data["closetime"] = market_data["opentime"] + pd.Timedelta(hours=1) - pd.Timedelta(milliseconds=1)
     market_data = market_data.loc[market_data["opentime"] < datetime.datetime(2021, 10, 29, 10)]
     market_data[num_cols] = market_data[num_cols].astype(float)
+    market_data = market_data.merge(trades_data[["timestamp", exchange_name]],
+                                    left_on="opentime",
+                                    right_on="timestamp").rename({exchange_name: "trades"}, axis=1)
 
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
@@ -105,6 +107,6 @@ def get_kraken_market_data():
 if __name__ == "__main__":
     # get_binance_market_data()
     # get_bitfinex_market_data()
-    get_bitstamp_market_data()
-    # get_coinbase_market_data()
+    # get_bitstamp_market_data()
+    get_coinbase_market_data()
     # get_kraken_market_data()
