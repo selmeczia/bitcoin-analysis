@@ -8,7 +8,6 @@ markets_data_dict = {}
 for market in markets:
     file = f'{main_path}/{market}.csv'
     data = pd.read_csv(file)
-    # data["market"] = str(market)
     markets_data_dict[market] = data
 
 for market in markets:
@@ -34,7 +33,9 @@ for market in markets:
     row["q3_vol"] = markets_data_dict[market]["volume"].quantile(.75)
     row["avg_dollar_vol"] = markets_data_dict[market]["dollar_vol"].mean()
     row["sum_amihud"] = markets_data_dict[market]["amihud"].sum()
-    row["cov"] = markets_data_dict[market][["first", "second"]].cov().iloc[0,1]
+    # row["cov"] = markets_data_dict[market][["first", "second"]].cov().iloc[0,1]
+    row["avg_num_of_trades"] = markets_data_dict[market]["trades"].mean()
+    row["avg_trade_size"] = (markets_data_dict[market]["volume"] / markets_data_dict[market]["trades"]).mean()
     desc_stat = desc_stat.append(row, ignore_index=True)
 
 desc_stat
