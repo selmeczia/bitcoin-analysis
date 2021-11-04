@@ -101,5 +101,6 @@ plt.plot(pd.to_datetime(df["time"]),
          df["ma"],
          label="Moving average (20 day)")
 plt.title("Price of BTC-USD and its 20-day moving average")
+plt.legend(loc='upper right')
 # plt.show()
 plt.savefig(plot_path / 'moving_average_price.png', dpi=300)
