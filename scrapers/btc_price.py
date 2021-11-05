@@ -11,7 +11,7 @@ price_df = pd.DataFrame()
 last_date = start_date
 
 while last_date > end_date:
-    url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=2000&toTs={last_date}"
+    url = f"https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=2000&toTs={last_date}&e=Bitfinex"
     response = requests.get(url).json()
     data = pd.DataFrame(response["Data"]["Data"])
     data["time"] = pd.to_datetime(data["time"], unit="s")
