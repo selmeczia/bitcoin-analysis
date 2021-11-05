@@ -93,14 +93,72 @@ df["ma"] = df["close"].rolling(window=480, min_periods=1).mean()
 df["indicator"] = np.where(df["ma"] > df["close"], "sell", "buy")
 df = df.loc[np.logical_and(df["time"] > start_date,
                            df["time"] < end_date)]
-plt.rcParams["figure.figsize"] = (12, 7)
-plt.plot(pd.to_datetime(df["time"]),
-         df["close"],
-         label="Price")
-plt.plot(pd.to_datetime(df["time"]),
-         df["ma"],
-         label="Moving average (20 day)")
-plt.title("Price of BTC-USD and its 20-day moving average")
-plt.legend(loc='upper right')
+
+# plt.rcParams["figure.figsize"] = (12, 7)
+# plt.plot(pd.to_datetime(df["time"]),
+#          df["close"],
+#          label="Price")
+# plt.plot(pd.to_datetime(df["time"]),
+#          df["ma"],
+#          label="Moving average (20 day)")
+# plt.bar(pd.to_datetime(df["time"]),
+#          df["volumefrom"])
+#
+# plt.title("Price of BTC-USD and its 20-day moving average")
+# plt.legend(loc='upper right')
+#
+# axes2 = plt.twinx()
+# axes2.plot(x, y, color='k', label='Sine')
+# axes2.set_ylim(-1, 1)
+# axes2.set_ylabel('Line plot')
+#
+# # plt.show()
+# plt.savefig(plot_path / 'moving_average_price.png', dpi=300)
+#
+
+# Price and volume (same graph)
+# plt.rcParams["figure.figsize"] = (12, 7)
+# fig, ax1 = plt.subplots()
+# ax1.plot(pd.to_datetime(df["time"]),
+#                df["close"],
+#                label="Price")
+# ax1.plot(pd.to_datetime(df["time"]),
+#          df["ma"],
+#          label="Moving average (20 day)")
+# ax1.set_ylabel("Price")
+# ax1.set_ylim(ymin=35000)
+#
+# ax2 = ax1.twinx()
+# ax2.bar(pd.to_datetime(df["time"]),
+#          df["volumefrom"],
+#         width=0.05,
+#         color='C2')
+# ax2.set_ylabel("Volume")
+# plt.title("Price of BTC-USD and its 20-day simple moving average (left axis) \n"
+#           "Volume by hour (right axis)")
 # plt.show()
-plt.savefig(plot_path / 'moving_average_price.png', dpi=300)
+# plt.savefig(plot_path / 'moving_average_price_volume.png', dpi=300)
+
+# Price and volume (different graph)
+# plt.rcParams["figure.figsize"] = (15, 10)
+# fig, axs = plt.subplots(2)
+# axs[0].plot(pd.to_datetime(df["time"]),
+#                df["close"],
+#                label="Price")
+# axs[0].plot(pd.to_datetime(df["time"]),
+#          df["ma"],
+#          label="Moving average (20 day)")
+# axs[0].set_ylabel("Price")
+# axs[0].legend()
+# axs[0].set_title('Price of BTC-USD and its 20-day simple moving average with volume')
+#
+#
+# axs[1].bar(pd.to_datetime(df["time"]),
+#          df["volumefrom"],
+#         width=0.05,
+#         color='C2')
+# axs[1].set_ylabel("Volume")
+# for ax in fig.get_axes():
+#     ax.label_outer()
+# plt.show()
+# plt.savefig(plot_path / 'moving_average_price_volume_2.png', dpi=300)
