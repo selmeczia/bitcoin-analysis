@@ -103,10 +103,11 @@ def get_kraken_market_data():
     market_data_name = f'{path}/{exchange_name}.csv'
     market_data[column_order].to_csv(market_data_name, index=False)
 
-
+# Don't run!!!
 if __name__ == "__main__":
     # get_binance_market_data()
     # get_bitfinex_market_data()
     # get_bitstamp_market_data()
-    get_coinbase_market_data()
+    # get_coinbase_market_data()
     # get_kraken_market_data()
+    print()
