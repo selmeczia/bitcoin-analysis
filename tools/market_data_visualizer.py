@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 from pathlib import Path
 import seaborn as sns
-
+from matplotlib.dates import DateFormatter
 
 markets = ["binance", "bitfinex", "bitstamp", "coinbase", "kraken"]
 markets_data_dict = {}
@@ -129,3 +129,38 @@ for market in rest_market:
 price_dev
 plt.legend()
 plt.show()
+
+
+# Flash crash
+
+# data = pd.read_csv('C:/Users/Adam/Documents/bitcoin-transactions/kraken_flash_crash.csv')
+# data["time"] = pd.to_datetime(data["time"])
+#
+# data["minute"] = data["time"].dt.minute
+#
+# aggr_df = pd.DataFrame()
+# aggr_df["limit"] = data.loc[data["market/limit"] == "l"].groupby("minute")["market/limit"].count()
+# aggr_df["market"] = data.loc[data["market/limit"] == "m"].groupby("minute")["market/limit"].count()
+# aggr_df["minute"] = pd.Series(range(0, 59))
+#
+#
+# plt.rcParams["figure.figsize"] = (15, 10)
+# fig, axs = plt.subplots(3)
+#
+#
+# axs[0].plot(data["time"],
+#           data["price"])
+# axs[0].xaxis.set_major_formatter(DateFormatter("%M"))
+# axs[0].set_title("Price of BTC-USD on Kraken, on 2021-10-21 between 11:00 AM and 12:00 AM")
+#
+# axs[1].bar(aggr_df["minute"],
+#          aggr_df["market"],
+#          color="green")
+# axs[1].set_title("Market price transactions")
+# axs[2].bar(aggr_df["minute"],
+#          aggr_df["limit"],
+#          color="red")
+# axs[2].set_title("Limit order transactions")
+# plt.show()
+# plt.savefig(plot_path / "kraken_flash_crash.png", dpi=300)
+
