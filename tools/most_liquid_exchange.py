@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from pathlib import Path
+import matplotlib.transforms as mtransforms
 import numpy as np
 
 # Plot config
@@ -81,11 +82,53 @@ for market in markets:
     col_name = f'{market}_mle'
     mle_data_aggr[col_name] = pd.concat(mle_values, axis=1).sum(axis=1)
 mle_data = pd.concat(mle_data_aggr, axis=1)
+mle_data["best_mle"] = mle_data[[s + "_mle" for s in markets]].min(axis=1)
 
+# MLE plot no aggregation
+# plt.rcParams["figure.figsize"] = (15, 7)
+# fig, ax = plt.subplots()
+# for market in markets:
+#     ax.plot(mle_data["timestamp"],
+#              mle_data[f'{market}_mle'],
+#              label=market.capitalize())
+#     ax.fill_between(mle_data["timestamp"], 0, 100, where=mle_data[f'{market}_mle'] == mle_data["best_mle"], alpha=0.1, interpolate=True)
+#
+# axes = plt.gca()
+# axes.set_ylim([0,4.1])
+# plt.title("MLE values for the different exchanges (no aggregation)")
+# plt.legend(loc="upper right", bbox_to_anchor=(1.11, 1))
+# trans = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
+# plt.show()
+# plt.savefig(plot_path / 'mle_hourly.png', dpi=300)
+
+
+
+mle_data_daily_dict = np.split(mle_data, 14)
+mle_data_daily = {}
+mle_daily = pd.DataFrame()
+for day in mle_data_daily_dict:
+    for market in markets:
+        mle_data_daily["timestamp"] = day.reset_index()["timestamp"][0]
+        market_col = f'{market}_mle'
+        mle_data_daily[market_col] = day[market_col].mean()
+    mle_daily = mle_daily.append(mle_data_daily, ignore_index=True)
+
+mle_daily["best_mle"] = mle_daily[[s + "_mle" for s in markets]].min(axis=1)
+mle_daily
+
+# MLE plot daily aggregation
+plt.rcParams["figure.figsize"] = (10, 7)
+fig, ax = plt.subplots()
 for market in markets:
-    plt.plot(mle_data["timestamp"],
-             mle_data[f'{market}_mle'],
+    ax.plot(mle_daily["timestamp"],
+             mle_daily[f'{market}_mle'],
              label=market.capitalize())
-plt.title("MLE values for the different exchanges")
+    ax.fill_between(mle_daily["timestamp"], 0, 10000, step="mid", where=mle_daily[f'{market}_mle'] == mle_daily["best_mle"] , alpha=0.1, interpolate=True)
+
+axes = plt.gca()
+axes.set_ylim([0,4.1])
+plt.title("MLE values for the different exchanges (daily aggregation)")
 plt.legend(loc="upper right")
-plt.show()
+trans = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
+# plt.show()
+plt.savefig(plot_path / 'mle_daily.png', dpi=300)
