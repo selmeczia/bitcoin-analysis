@@ -144,7 +144,7 @@ for measure in measures:
     else:
         result_df.loc[result_df.sort_values(["interval", measure], ascending=[True, False]).index, f'{measure}_order'] = list(range(1, 6)) * intervals
 result_df
-result_df.groupby("market").sum()
+cet
 
 # Liquidity measure plot (TX, $Vol)
 # plt.rcParams["figure.figsize"] = (15, 10)

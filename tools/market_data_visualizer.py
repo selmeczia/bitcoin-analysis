@@ -20,16 +20,16 @@ for market in markets:
     markets_data_dict[market] = data
 
 # Volume plot
-# plt.rcParams["figure.figsize"] = (17, 7)
-# for market in markets:
-#     data = markets_data_dict[market]
-#     plt.plot(pd.to_datetime(data["opentime"]),
-#              data["volume"],
-#              label=market.capitalize())
-# plt.title('Volume per hour')
-# plt.ylabel("Volume")
-# plt.legend(loc='upper right')
-# plt.show()
+plt.rcParams["figure.figsize"] = (17, 7)
+for market in markets:
+    data = markets_data_dict[market]
+    plt.plot(pd.to_datetime(data["opentime"]),
+             data["volume"],
+             label=market.capitalize())
+plt.title('Volume per hour')
+plt.ylabel("Volume")
+plt.legend(loc='upper right')
+plt.show()
 # plt.savefig(plot_path / 'vol_timeline.png', dpi=300)
 
 # Number of trades plot
@@ -42,7 +42,7 @@ for market in markets:
 # plt.title('Number of trades')
 # plt.legend(loc='upper right')
 # plt.show()
-# plt.savefig(plot_path / 'vol_timeline.png', dpi=300)
+# plt.savefig(plot_path / 'trades_timeline.png', dpi=300)
 
 
 # Hourly average trade sizes
@@ -128,7 +128,7 @@ for market in rest_market:
              label=market)
 price_dev
 plt.legend()
-plt.show()
+# plt.show()
 
 
 # Flash crash

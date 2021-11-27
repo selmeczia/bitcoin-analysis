@@ -40,6 +40,7 @@ markets_data_dict = {}
 for market in markets:
     file = f'{main_path}/{market}.csv'
     data = pd.read_csv(file)
+    data["hour"] = pd.to_datetime(data["opentime"]).dt.hour
     markets_data_dict[market] = data
 market_data = pd.concat(markets_data_dict).rename_axis(["market", "step"]).reset_index()
 
@@ -117,18 +118,28 @@ mle_daily["best_mle"] = mle_daily[[s + "_mle" for s in markets]].min(axis=1)
 mle_daily
 
 # MLE plot daily aggregation
-plt.rcParams["figure.figsize"] = (10, 7)
-fig, ax = plt.subplots()
-for market in markets:
-    ax.plot(mle_daily["timestamp"],
-             mle_daily[f'{market}_mle'],
-             label=market.capitalize())
-    ax.fill_between(mle_daily["timestamp"], 0, 10000, step="mid", where=mle_daily[f'{market}_mle'] == mle_daily["best_mle"] , alpha=0.1, interpolate=True)
-
-axes = plt.gca()
-axes.set_ylim([0,4.1])
-plt.title("MLE values for the different exchanges (daily aggregation)")
-plt.legend(loc="upper right")
-trans = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
+# plt.rcParams["figure.figsize"] = (10, 7)
+# fig, ax = plt.subplots()
+# for market in markets:
+#     ax.plot(mle_daily["timestamp"],
+#              mle_daily[f'{market}_mle'],
+#              label=market.capitalize())
+#     ax.fill_between(mle_daily["timestamp"], 0, 10000, step="mid", where=mle_daily[f'{market}_mle'] == mle_daily["best_mle"] , alpha=0.1, interpolate=True)
+#
+# axes = plt.gca()
+# axes.set_ylim([0,4.1])
+# plt.title("MLE values for the different exchanges (daily aggregation)")
+# plt.legend(loc="upper right")
+# trans = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
 # plt.show()
-plt.savefig(plot_path / 'mle_daily.png', dpi=300)
+# plt.savefig(plot_path / 'mle_daily.png', dpi=300)
+
+hourly_vol = market_data.groupby(by=["market", "hour"]).mean()[["volume", "trades"]]
+
+hourly_vol = pd.concat([hourly_vol.reset_index(), pd.DataFrame(list(hourly_vol.index), columns=["market", "hour"])])
+
+for market in markets:
+    plt.plot(hourly_vol.loc[hourly_vol["market"] == market, "hour"],
+             hourly_vol.loc[hourly_vol["market"] == market, "volume"],
+             label=market.capitalize())
+plt.show()
